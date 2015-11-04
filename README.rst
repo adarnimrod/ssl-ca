@@ -47,7 +47,7 @@ Example config
 --------------
 ::
 
-    # This file is sourced by the shell script program, so comments start with #
+    # This file is sourced by ssl-ca, so comments start with #
     # and usual shell evaluation and variables can be used.
     # No setting is mandatory and missing setting will be left blank or the
     # default value will be used.

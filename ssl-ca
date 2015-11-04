@@ -1,21 +1,45 @@
 #!/bin/sh -e
 
-usage ()
-{
+default_config=\
+"# This file is sourced by the shell script program, so comments start with #
+# and usual shell evaluation and variables can be used.
+# No setting is mandatory and missing setting will be left blank or the
+# default value will be used.
+keysize=2048
+keytype='rsa'
+cipher='aes256'
+days=365
+countrycode='US'
+state='Somewhere'
+locality='Some other place.'
+orgname='Acme'
+orgunit='Widgets'
+email='hostmaster@example.com'"
+
+usage () {
+    cat /dev/null
 }
 
-init ()
-{
+init () {
+    if [ -a "$1" ]
+    then
+        echo "$1 already exists."
+        exit 1
+    fi
+    mkdir "$1"
+    mkdir "$1/certs"
+    mkdir "$1/keys"
+    echo "$default_config" > config
 }
 
-sign_key ()
-{
+sign_key () {
+    cat /dev/null
 }
 
-gen_key ()
-{
+gen_key () {
+    cat /dev/null
 }
 
-ca_gen ()
-{
+ca_gen () {
+    cat /dev/null
 }
