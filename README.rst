@@ -12,7 +12,7 @@ Installation
     cd ssl-ca
     sudo make install
 
-The dependencies are openssl, getopt and a POSIX shell.
+The dependencies are openssl and a POSIX shell.
 
 Usage
 -----
@@ -44,7 +44,7 @@ To resign **ALL** existing keys (overriding existing certificates) ::
     $ ssl-ca resign
 
 Example config
--------------
+--------------
 ::
 
     # This file is sourced by the shell script program, so comments start with #
@@ -61,6 +61,16 @@ Example config
     orgname='Acme'
     orgunit='Widgets'
     email='hostmaster@example.com'
+
+License
+------
+
+This software is licnesed under the MIT licese (see the LICENSE.txt file).
+
+Author
+------
+
+Nimrod Adar.
 
 TODO
 ----
