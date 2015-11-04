@@ -63,7 +63,7 @@ Example config
     email='hostmaster@example.com'
 
 License
-------
+-------
 
 This software is licnesed under the MIT licese (see the LICENSE.txt file).
 
