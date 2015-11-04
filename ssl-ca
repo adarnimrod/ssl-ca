@@ -1,0 +1,21 @@
+#!/bin/sh -e
+
+usage ()
+{
+}
+
+init ()
+{
+}
+
+sign_key ()
+{
+}
+
+gen_key ()
+{
+}
+
+ca_gen ()
+{
+}
