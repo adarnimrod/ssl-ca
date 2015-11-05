@@ -32,29 +32,26 @@ default_bits = 2048"
 #orgunit='Widgets'
 
 usage () {
-    echo "Usage: $0 "
+    echo "Usage: $0 init|gen|sign|resign"
 }
 
 init () {
-    mkdir "$1/certs"
-    mkdir "$1/keys"
-    echo "$default_config" > "$1/openssl.cnf"
+    mkdir "certs"
+    mkdir "keys"
+    openssl genra -out CA.key
+    openssl req -x509 -new -config openssl.cnf -key CA.key -out CA.crt
+    echo "$default_config" > "openssl.cnf"
 }
 
 sign_key () {
     csr="$(mktemp)"
-    openssl req -new -config openssl.cnf -out $csr
-    openssl x509 -req -in $csr -out certs/$1.crt
-    rm $csr
+    openssl req -new -config openssl.cnf -out "$csr"
+    openssl x509 -req -in "$csr" -out "certs/$1.crt"
+    rm "$csr"
 }
 
 gen_key () {
-    openssl genrsa -out keys/$1.key
-}
-
-ca_gen () {
-    openssl genra -out CA.key
-    openssl req -x509 -new -config openssl.cnf -key CA.key -out CA.crt
+    openssl genrsa -out "keys/$1"
 }
 
 if [ $# -lt 1 ]
@@ -67,26 +64,23 @@ case "$1" in
     init)
         init
         ;;
-    ca-gen)
-        ca-gen
-        ;;
     gen)
-        gen_key
-        sign_key $key
+        gen_key "$2"
+        sign_key "$2"
         ;;
     sign)
-        for key in keys/*.key
+        for key in keys/*
         do
-            if [ ! -f certs/$key.pem ]
+            if [ ! -f "certs/$(basename $key)" ]
             then
-                sign_key $key
+                sign_key "$(basename $key)"
             fi
         done
         ;;
     resign)
         for key in keys/*
         do
-            sign_key $key
+            sign_key "$(basename $key)"
         done
         ;;
     *)
