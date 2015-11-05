@@ -24,7 +24,7 @@ To start a new CA ::
     $ ssl-ca init
 
 This will create a new directory with the directory structure and a
-configuration file **Remember to change the configuration in the config file.**
+configuration file **Remember to change the configuration in `openssl.cnf`.**
 
 To generate a new CA key and certificate (inside the new directory)::
 

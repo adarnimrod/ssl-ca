@@ -1,45 +1,96 @@
 #!/bin/sh -e
 
 default_config=\
-"# This file is sourced by the shell script program, so comments start with #
-# and usual shell evaluation and variables can be used.
-# No setting is mandatory and missing setting will be left blank or the
-# default value will be used.
-keysize=2048
-keytype='rsa'
-cipher='aes256'
-days=365
-countrycode='US'
-state='Somewhere'
-locality='Some other place.'
-orgname='Acme'
-orgunit='Widgets'
-email='hostmaster@example.com'"
+"[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+dir = .
+certs = certs
+certificate = CA.crt
+private_key = CA.key
+default_md = sha256
+default_days = 365
+email_in_dn = no
+policy = policy_any
+
+[ policy_any ]
+countryName = US
+stateOrProvinceName =
+
+[ req ]
+prompt = no
+encrypt_key =
+default_md = sha256
+default_bits = 2048"
+
+#keytype=\"$keytype\"
+#cipher=\"$cipher\"
+#state='Somewhere'
+#locality='Some other place.'
+#orgname='Acme'
+#orgunit='Widgets'
 
 usage () {
-    cat /dev/null
+    echo "Usage: $0 "
 }
 
 init () {
-    if [ -a "$1" ]
-    then
-        echo "$1 already exists."
-        exit 1
-    fi
-    mkdir "$1"
     mkdir "$1/certs"
     mkdir "$1/keys"
-    echo "$default_config" > config
+    echo "$default_config" > "$1/openssl.cnf"
 }
 
 sign_key () {
-    cat /dev/null
+    csr="$(mktemp)"
+    openssl req -new -config openssl.cnf -out $csr
+    openssl x509 -req -in $csr -out certs/$1.crt
+    rm $csr
 }
 
 gen_key () {
-    cat /dev/null
+    openssl genrsa -out keys/$1.key
 }
 
 ca_gen () {
-    cat /dev/null
+    openssl genra -out CA.key
+    openssl req -x509 -new -config openssl.cnf -key CA.key -out CA.crt
 }
+
+if [ $# -lt 1 ]
+then
+    usage
+    exit 1
+fi
+
+case "$1" in
+    init)
+        init
+        ;;
+    ca-gen)
+        ca-gen
+        ;;
+    gen)
+        gen_key
+        sign_key $key
+        ;;
+    sign)
+        for key in keys/*.key
+        do
+            if [ ! -f certs/$key.pem ]
+            then
+                sign_key $key
+            fi
+        done
+        ;;
+    resign)
+        for key in keys/*
+        do
+            sign_key $key
+        done
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+esac
