@@ -12,17 +12,19 @@ Installation
     cd ssl-ca
     sudo make install
 
-The dependencies are openssl and a POSIX shell.
+The only dependency is openssl.
 
 Usage
 -----
 
 To start a new CA ::
 
-    $ ssl-ca init workca
+    $ mkdir mycerts
+    $ cd mycerts
+    $ ssl-ca init
 
-This will create a new directory with the directory structure and an example
-configuration file. **Remember to change the configuration in the config file.**
+This will create a new directory with the directory structure and a
+configuration file **Remember to change the configuration in the config file.**
 
 To generate a new CA key and certificate (inside the new directory)::
 
