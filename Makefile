@@ -9,7 +9,10 @@ clean:
 
 test: clean
 	./ssl-ca init
+	test "$$(openssl rsa -noout -check -in CA.key)" == "RSA key ok"
+	test "$$(openssl verify -CAfile CA.crt CA.crt)" == "CA.crt: OK"
 	./ssl-ca gen www
+	test "$$(openssl rsa -noout -check -in keys/www)" == "RSA key ok"
 	openssl verify -CAfile CA.crt certs/www
 	test "$$(openssl x509 -in certs/www -issuer -noout)" == "issuer= /CN=*.*.ssl-ca"
 	test "$$(openssl x509 -in certs/www -subject -noout)" == "subject= /CN=*.*.www.ssl-ca"
