@@ -21,6 +21,10 @@ configuration for starting work and a new CA key and certificate. ::
     $ mkdir domain.tld
     $ cd domain.tld
     $ ssl-ca init
+    Generating RSA private key, 512 bit long modulus
+    .++++++++++++
+    ......++++++++++++
+    e is 65537 (0x10001)
 
 To generate a new key and certificate for the www host, the key will at
 ``keys/www`` and the certificate at ``certs/www`` ::
@@ -49,6 +53,8 @@ Nimrod Adar.
 TODO
 ----
 
+- Verify that the fqdn is correct.
 - Fill out example output in the usage section.
 - Add checks and failure messages to each action.
-- Finish openssl configuration.
+- Delete serial file.
+- Testing (creating a ca, creating a key and cert and verifying).

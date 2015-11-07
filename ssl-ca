@@ -1,5 +1,6 @@
 #!/bin/sh -e
 
+domain="$(basename $(pwd))"
 default_config=\
 "[ ca ]
 default_ca = CA_default
@@ -12,45 +13,65 @@ private_key = CA.key
 default_md = sha256
 default_days = 365
 email_in_dn = no
-policy = policy_any
 
-[ policy_any ]
-countryName = US
-stateOrProvinceName =
+[ req_distinguished_name]
+#C = 2 letter country code
+#ST = State
+#L = Locality
+#O = Organization name
+#OU = Organizational unit
+#emailAddress = email address
+#CN = *.*.$domain
 
 [ req ]
+distinguished_name = req_distinguished_name
 prompt = no
-encrypt_key =
+encrypt_key = no
 default_md = sha256
 default_bits = 2048"
-
-#keytype=\"$keytype\"
-#cipher=\"$cipher\"
-#state='Somewhere'
-#locality='Some other place.'
-#orgname='Acme'
-#orgunit='Widgets'
 
 usage () {
     echo "Usage: $0 init|gen|sign|resign"
 }
 
 init () {
-    mkdir "certs"
-    mkdir "keys"
-    openssl genra -out CA.key
-    openssl req -x509 -new -config openssl.cnf -key CA.key -out CA.crt
+    mkdir -p "certs"
+    mkdir -p "keys"
     echo "$default_config" > "openssl.cnf"
+    openssl genrsa \
+        -out CA.key
+    openssl req \
+        -x509 \
+        -config openssl.cnf \
+        -new \
+        -subj "CN=*.*.$domain" \
+        -key CA.key \
+        -out CA.crt
 }
 
 sign_key () {
-    csr="$(mktemp)"
-    openssl req -new -config openssl.cnf -out "$csr"
-    openssl x509 -req -in "$csr" -out "certs/$1.crt"
+    echo "Generating CSR for $1.$domain."
+    csr="$(mktemp -t ssl-ca)"
+    openssl req \
+        -key keys/$1 \
+        -new \
+        -config openssl.cnf \
+        -subj "/CN=*.*.$1.$domain" \
+        -out "$csr"
+    echo "Generating cert for $1.$domain."
+    openssl x509 \
+        -req \
+        -in "$csr" \
+        -out "certs/$1" \
+        -CA CA.crt \
+        -CAcreateserial \
+        -extensions v3_ca \
+        -CAkey CA.key
     rm "$csr"
 }
 
 gen_key () {
+    echo "Generating key for $1.$domain."
     openssl genrsa -out "keys/$1"
 }
 
