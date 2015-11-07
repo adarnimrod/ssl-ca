@@ -74,7 +74,7 @@ sign_key () {
         echo "Can't find key to sign."
         exit 1
     fi
-    csr="$(mktemp -t ssl-ca)"
+    csr="$(mktemp -t ssl-ca-XXXXXXXXX)"
     export domain="$1.$(basename $PWD)"
     openssl req \
         -key keys/$1 \
