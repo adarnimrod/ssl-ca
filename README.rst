@@ -81,4 +81,4 @@ at: https://www.shore.co.il/cgit/.
 TODO
 ----
 
-- Add checks and failure messages to each action.
+Nothing to see here.

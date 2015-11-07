@@ -40,7 +40,12 @@ usage () {
 
 init () {
     mkdir -p "certs" "keys"
-    echo "$config" > "openssl.cnf"
+    if [ -a openssl.cnf ]
+    then
+        echo openssl.cnf already exists, skipping generation.
+    else
+        echo "$config" > "openssl.cnf"
+    fi
     openssl genrsa \
         -out CA.key
     openssl req \
@@ -52,6 +57,22 @@ init () {
 }
 
 sign_key () {
+    if [ $# -lt 1 ] || [ "$1" == "" ]
+    then
+        echo "No host specified."
+        exit 1
+    fi
+    if [ ! -f CA.crt ] || [ ! -f CA.key ] || [ ! -d keys ] || [ ! -d certs ] ||
+        [ ! -f openssl.cnf ]
+    then
+        echo "CA isn't initialized properly."
+        exit 1
+    fi
+    if [ ! -f "keys/$1" ]
+    then
+        echo "Can't find key to sign."
+        exit 1
+    fi
     csr="$(mktemp -t ssl-ca)"
     export domain="$1.$(basename $PWD)"
     openssl req \
@@ -59,7 +80,7 @@ sign_key () {
         -new \
         -config openssl.cnf \
         -out "$csr"
-    fqdn="$1.$domain" openssl x509 \
+    openssl x509 \
         -req \
         -in "$csr" \
         -out "certs/$1" \
@@ -71,6 +92,21 @@ sign_key () {
 }
 
 gen_key () {
+    if [ $# -lt 1 ] || [ "$1" == "" ]
+    then
+        echo "No host specified."
+        exit 1
+    fi
+    if [ ! -d keys ]
+    then
+        echo "keys directory doesn't exists, run ssl-ca init to rectify."
+        exit 1
+    fi
+    if [ -a "keys/$1" ]
+    then
+        echo "Key already exists."
+        exit 1
+    fi
     openssl genrsa -out "keys/$1"
 }
 
