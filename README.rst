@@ -2,7 +2,9 @@ SSL-CA
 ######
 
 This utility automates generating an SSL certificate authority, keys and signed
-certificates. The only dependecy is openssl.
+certificates. The only dependecy is openssl. The usage in mind are testing and
+internal environments, therefore some security measures (like revokation) are
+not available in the current implemetation.
 
 Installation
 ------------
