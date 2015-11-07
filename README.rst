@@ -81,4 +81,3 @@ TODO
 ----
 
 - Add checks and failure messages to each action.
-- Verify that the fqdn is correct.

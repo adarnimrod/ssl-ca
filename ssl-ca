@@ -53,7 +53,7 @@ init () {
 
 sign_key () {
     csr="$(mktemp -t ssl-ca)"
-    export domain="$1.$domain"
+    export domain="$1.$(basename $PWD)"
     openssl req \
         -key keys/$1 \
         -new \
