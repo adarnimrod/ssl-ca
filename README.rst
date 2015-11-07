@@ -63,7 +63,7 @@ Development
 -----------
 
 For easing devlopment ``make test`` and ``make clean`` are also provided (it's
-recommended to add ``make test`` to the pre-commit git hook).
+recommended to add ``make test`` to the pre-push git hook).
 
 License
 -------
