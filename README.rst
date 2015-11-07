@@ -45,6 +45,8 @@ License
 
 This software is licnesed under the MIT licese (see the ``LICENSE.txt`` file).
 
+.. include:: LICENSE.txt
+
 Author
 ------
 
