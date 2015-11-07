@@ -2,7 +2,7 @@ SSL-CA
 ######
 
 This utility automates generating an SSL certificate authority, keys and signed
-certificates. The only dependecy is openssl. The usage in mind are testing and
+certificates. The only dependecy is openssl. The usage in mind is testing and
 internal environments, therefore some security measures (like revokation) are
 not available in the current implemetation.
 
@@ -59,6 +59,11 @@ To resign **ALL** existing keys (regardles of existing certificates) ::
     subject=/CN=*.*.www.smtp.domain.tld
     Getting CA Private Key
 
+Development
+-----------
+
+For easing devlopment ``make test`` and ``make clean`` are also provided.
+
 License
 -------
 
@@ -67,11 +72,13 @@ This software is licnesed under the MIT licese (see the ``LICENSE.txt`` file).
 Author
 ------
 
-Nimrod Adar.
+Nimrod Adar, `contact me <nimrod@shore.co.il>`_ or visit my `website
+<https://wwww.shore.co.il/>`_. Patches are welcome via `git send-email
+<http://git-scm.com/book/en/v2/Git-Commands-Email>`_. The repository is located
+at: https://www.shore.co.il/cgit/.
 
 TODO
 ----
 
 - Add checks and failure messages to each action.
 - Verify that the fqdn is correct.
-- Testing (creating a ca, creating a key and cert and verifying).
