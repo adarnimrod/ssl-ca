@@ -4,5 +4,6 @@
 *.swo
 certs/*
 keys/*
-openssl.cnf*
-CA.*
+openssl.cnf
+CA.key
+CA.crt
