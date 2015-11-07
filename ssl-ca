@@ -1,18 +1,28 @@
 #!/bin/sh -e
 
-domain="$(basename $(pwd))"
-default_config=\
+export domain="$(basename $PWD)"
+seed="$(hexdump -n10 -e '10/1 "%02o" "\n"' /dev/urandom)"
+config=\
 "[ ca ]
 default_ca = CA_default
 
 [ CA_default ]
-dir = .
-certs = certs
-certificate = CA.crt
-private_key = CA.key
+dir = $PWD
+certs = \$dir/certs
+certificate = \$dir/CA.crt
+private_key = \$dir/CA.key
 default_md = sha256
 default_days = 365
 email_in_dn = no
+RANDFILE = /dev/urandom
+database = /dev/null
+
+[ req ]
+distinguished_name = req_distinguished_name
+prompt = no
+encrypt_key = no
+default_md = sha256
+default_bits = 2048
 
 [ req_distinguished_name]
 #C = 2 letter country code
@@ -21,57 +31,46 @@ email_in_dn = no
 #O = Organization name
 #OU = Organizational unit
 #emailAddress = email address
-#CN = *.*.$domain
-
-[ req ]
-distinguished_name = req_distinguished_name
-prompt = no
-encrypt_key = no
-default_md = sha256
-default_bits = 2048"
+CN = *.*.\${ENV::domain}
+"
 
 usage () {
     echo "Usage: $0 init|gen|sign|resign"
 }
 
 init () {
-    mkdir -p "certs"
-    mkdir -p "keys"
-    echo "$default_config" > "openssl.cnf"
+    mkdir -p "certs" "keys"
+    echo "$config" > "openssl.cnf"
     openssl genrsa \
         -out CA.key
     openssl req \
         -x509 \
         -config openssl.cnf \
         -new \
-        -subj "CN=*.*.$domain" \
         -key CA.key \
         -out CA.crt
 }
 
 sign_key () {
-    echo "Generating CSR for $1.$domain."
     csr="$(mktemp -t ssl-ca)"
+    export domain="$1.$domain"
     openssl req \
         -key keys/$1 \
         -new \
         -config openssl.cnf \
-        -subj "/CN=*.*.$1.$domain" \
         -out "$csr"
-    echo "Generating cert for $1.$domain."
-    openssl x509 \
+    fqdn="$1.$domain" openssl x509 \
         -req \
         -in "$csr" \
         -out "certs/$1" \
         -CA CA.crt \
-        -CAcreateserial \
+        -set_serial $seed \
         -extensions v3_ca \
         -CAkey CA.key
     rm "$csr"
 }
 
 gen_key () {
-    echo "Generating key for $1.$domain."
     openssl genrsa -out "keys/$1"
 }
 
