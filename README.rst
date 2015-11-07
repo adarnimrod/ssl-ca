@@ -30,15 +30,32 @@ To generate a new key and certificate for the www host, the key will at
 ``keys/www`` and the certificate at ``certs/www`` ::
 
     $ ssl-ca gen www
+    Generating RSA private key, 512 bit long modulus
+    ................................++++++++++++
+    ..++++++++++++
+    e is 65537 (0x10001)
+    Signature ok
+    subject=/CN=*.*.www.domain.tld
+    Getting CA Private Key
 
 To sign existing keys, copy them to the ``keys/`` folder. All keys that don't
 have a matching certificate under ``certs/`` will be signed when running ::
 
+    $ openssl genrsa -out keys/smtp #Generate a key for smtp.domain.tld
     $ ssl-ca sign
+    Signature ok
+    subject=/CN=*.*.smtp.domain.tld
+    Getting CA Private Key
 
 To resign **ALL** existing keys (regardles of existing certificates) ::
 
     $ ssl-ca resign
+    Signature ok
+    subject=/CN=*.*.smtp.domain.tld
+    Getting CA Private Key
+    Signature ok
+    subject=/CN=*.*.www.smtp.domain.tld
+    Getting CA Private Key
 
 License
 -------
@@ -53,8 +70,6 @@ Nimrod Adar.
 TODO
 ----
 
-- Verify that the fqdn is correct.
-- Fill out example output in the usage section.
 - Add checks and failure messages to each action.
-- Delete serial file.
+- Verify that the fqdn is correct.
 - Testing (creating a ca, creating a key and cert and verifying).
