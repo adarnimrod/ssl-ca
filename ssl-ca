@@ -1,5 +1,6 @@
 #!/bin/sh -e
 
+test $(which openssl) || ( echo "Can't find openssl."; exit 1)
 export domain="$(basename $PWD)"
 seed="$(hexdump -n10 -e '10/1 "%02o" "\n"' /dev/urandom)"
 config=\
