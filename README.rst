@@ -81,4 +81,5 @@ at: https://www.shore.co.il/cgit/.
 TODO
 ----
 
-Nothing to see here.
+- Firefox 42.0 fails to connect with ssl_error_weak_server_cert_key error, need
+  to investigate and solve.
