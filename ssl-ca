@@ -24,6 +24,7 @@ prompt = no
 encrypt_key = no
 default_md = sha256
 default_bits = 2048
+RANDFILE = /dev/urandom
 
 [ req_distinguished_name]
 #C = 2 letter country code
@@ -40,25 +41,24 @@ usage () {
 }
 
 init () {
-    mkdir -p "certs" "keys"
-    if [ -a openssl.cnf ]
+    mkdir -p certs keys
+    if [ -e openssl.cnf ]
     then
         echo openssl.cnf already exists, skipping generation.
     else
         echo "$config" > "openssl.cnf"
     fi
-    openssl genrsa \
-        -out CA.key
     openssl req \
         -x509 \
         -config openssl.cnf \
         -new \
-        -key CA.key \
+        -newkey rsa:2048 \
+        -keyout CA.key \
         -out CA.crt
 }
 
 sign_key () {
-    if [ $# -lt 1 ] || [ "$1" == "" ]
+    if [ $# -lt 1 ] || [ "$1" = "" ]
     then
         echo "No host specified."
         exit 1
@@ -93,7 +93,7 @@ sign_key () {
 }
 
 gen_key () {
-    if [ $# -lt 1 ] || [ "$1" == "" ]
+    if [ $# -lt 1 ] || [ "$1" = "" ]
     then
         echo "No host specified."
         exit 1
@@ -103,7 +103,7 @@ gen_key () {
         echo "keys directory doesn't exists, run ssl-ca init to rectify."
         exit 1
     fi
-    if [ -a "keys/$1" ]
+    if [ -e "keys/$1" ]
     then
         echo "Key already exists."
         exit 1
