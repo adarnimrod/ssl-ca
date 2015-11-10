@@ -59,6 +59,11 @@ To resign **ALL** existing keys (regardles of existing certificates) ::
     subject=/CN=*.*.www.smtp.domain.tld
     Getting CA Private Key
 
+
+The certs by themselves are the same as self-signed certs, but once you add
+``CA.crt`` to your browser (or OS), then the certs will be valid as any other
+cert on the internet.
+
 Development
 -----------
 
@@ -81,5 +86,4 @@ at: https://www.shore.co.il/cgit/.
 TODO
 ----
 
-- Firefox 42.0 fails to connect with ssl_error_weak_server_cert_key error, need
-  to investigate and solve.
+Nothing to see here.
