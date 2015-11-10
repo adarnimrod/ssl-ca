@@ -34,6 +34,12 @@ RANDFILE = /dev/urandom
 #OU = Organizational unit
 #emailAddress = email address
 CN = *.*.\${ENV::domain}
+
+[ v3_ca ]
+basicConstraints = CA:true
+
+[ v3_req ]
+basicConstraints = CA:false
 "
 
 usage () {
@@ -54,6 +60,7 @@ init () {
         -new \
         -newkey rsa:2048 \
         -keyout CA.key \
+        -extensions v3_ca \
         -out CA.crt
 }
 
@@ -87,7 +94,7 @@ sign_key () {
         -out "certs/$1" \
         -CA CA.crt \
         -set_serial $seed \
-        -extensions v3_ca \
+        -extensions v3_req \
         -CAkey CA.key
     rm "$csr"
 }
@@ -108,7 +115,7 @@ gen_key () {
         echo "Key already exists."
         exit 1
     fi
-    openssl genrsa -out "keys/$1"
+    openssl genrsa -out "keys/$1" 2048
 }
 
 if [ $# -lt 1 ]
