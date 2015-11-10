@@ -12,7 +12,7 @@ dir = $PWD
 certs = \$dir/certs
 certificate = \$dir/CA.crt
 private_key = \$dir/CA.key
-default_md = sha256
+default_md = sha1
 default_days = 365
 email_in_dn = no
 RANDFILE = /dev/urandom
@@ -22,7 +22,7 @@ database = /dev/null
 distinguished_name = req_distinguished_name
 prompt = no
 encrypt_key = no
-default_md = sha256
+default_md = sha1
 default_bits = 2048
 RANDFILE = /dev/urandom
 
