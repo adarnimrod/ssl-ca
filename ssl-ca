@@ -62,6 +62,12 @@ init () {
         -keyout CA.key \
         -extensions v3_ca \
         -out CA.crt
+    openssl pkcs12 \
+        -export \
+        -in CA.crt \
+        -inkey CA.key \
+        -out CA.p12 \
+        -passout pass:
 }
 
 sign_key () {

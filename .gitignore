@@ -7,3 +7,4 @@ keys/*
 openssl.cnf
 CA.key
 CA.crt
+CA.p12

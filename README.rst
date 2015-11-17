@@ -86,4 +86,4 @@ at: https://www.shore.co.il/cgit/.
 TODO
 ----
 
-Nothing to see here.
+- PKCS12 file for browser import (also tests).
