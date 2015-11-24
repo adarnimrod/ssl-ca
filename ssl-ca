@@ -1,7 +1,6 @@
 #!/bin/sh -e
 
 test $(which openssl) || ( echo "Can't find openssl."; exit 1)
-export domain="$(basename $PWD)"
 seed="$(hexdump -n10 -e '10/1 "%02o" "\n"' /dev/urandom)"
 config=\
 "[ ca ]
@@ -33,13 +32,15 @@ RANDFILE = /dev/urandom
 #O = Organization name
 #OU = Organizational unit
 #emailAddress = email address
-CN = *.*.\${ENV::domain}
+CN = \${ENV::domain}
 
 [ v3_ca ]
 basicConstraints = CA:true
+subjectAltName = DNS:*.\${ENV::domain}, DNS:*.*.\${ENV::domain}
 
 [ v3_req ]
 basicConstraints = CA:false
+subjectAltName = DNS:*.\${ENV::domain}
 "
 
 usage () {
@@ -47,6 +48,7 @@ usage () {
 }
 
 init () {
+    export domain="$(basename $PWD)"
     mkdir -p certs keys
     if [ -e openssl.cnf ]
     then
@@ -92,6 +94,7 @@ sign_key () {
     openssl req \
         -key keys/$1 \
         -new \
+        -reqexts v3_req \
         -config openssl.cnf \
         -out "$csr"
     openssl x509 \
@@ -101,6 +104,7 @@ sign_key () {
         -CA CA.crt \
         -set_serial $seed \
         -extensions v3_req \
+        -extfile openssl.cnf \
         -CAkey CA.key
     rm "$csr"
 }
