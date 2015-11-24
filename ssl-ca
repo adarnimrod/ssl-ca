@@ -11,7 +11,7 @@ dir = $PWD
 certs = \$dir/certs
 certificate = \$dir/CA.crt
 private_key = \$dir/CA.key
-default_md = sha1
+default_md = sha256
 default_days = 365
 email_in_dn = no
 RANDFILE = /dev/urandom
@@ -21,7 +21,7 @@ database = /dev/null
 distinguished_name = req_distinguished_name
 prompt = no
 encrypt_key = no
-default_md = sha1
+default_md = sha256
 default_bits = 2048
 RANDFILE = /dev/urandom
 
@@ -32,15 +32,14 @@ RANDFILE = /dev/urandom
 #O = Organization name
 #OU = Organizational unit
 #emailAddress = email address
-CN = \${ENV::domain}
+CN = \${ENV::cn}
 
 [ v3_ca ]
 basicConstraints = CA:true
-subjectAltName = DNS:*.\${ENV::domain}, DNS:*.*.\${ENV::domain}
 
 [ v3_req ]
 basicConstraints = CA:false
-subjectAltName = DNS:*.\${ENV::domain}
+subjectAltName = DNS:*.\${ENV::cn}
 "
 
 usage () {
@@ -48,7 +47,7 @@ usage () {
 }
 
 init () {
-    export domain="$(basename $PWD)"
+    export cn="$(basename $PWD)"
     mkdir -p certs keys
     if [ -e openssl.cnf ]
     then
@@ -90,7 +89,7 @@ sign_key () {
         exit 1
     fi
     csr="$(mktemp -t ssl-ca-XXXXXXXXX)"
-    export domain="$1.$(basename $PWD)"
+    export cn="$1.$(basename $PWD)"
     openssl req \
         -key keys/$1 \
         -new \
