@@ -39,7 +39,11 @@ basicConstraints = CA:true
 
 [ v3_req ]
 basicConstraints = CA:false
-subjectAltName = DNS:*.\${ENV::cn}
+subjectAltName = @AltNames
+
+[ AltNames ]
+DNS.1 = \${ENV::cn}
+DNS.2 = *.\${ENV::cn}
 "
 
 usage () {
