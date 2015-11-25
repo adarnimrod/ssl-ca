@@ -15,6 +15,7 @@ default_md = sha256
 email_in_dn = no
 RANDFILE = /dev/urandom
 database = /dev/null
+serial = serial
 
 [ req ]
 distinguished_name = req_distinguished_name
@@ -57,6 +58,12 @@ init () {
         echo openssl.cnf already exists, skipping generation.
     else
         echo "$config" > "openssl.cnf"
+    fi
+    if [ -e CA.srl ]
+    then
+        echo CA.srl already exists, skipping.
+    else
+        echo 1000 > CA.srl
     fi
     if [ -e CA.key ]
     then
@@ -120,7 +127,7 @@ sign_key () {
         -in "$csr" \
         -out "certs/$1" \
         -CA CA.crt \
-        -set_serial $seed \
+        -CAserial CA.srl \
         -extensions v3_req \
         -extfile openssl.cnf \
         -days 3650 \

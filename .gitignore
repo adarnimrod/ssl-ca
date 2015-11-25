@@ -8,4 +8,5 @@ openssl.cnf
 CA.key
 CA.crt
 CA.p12
+CA.srl
 .server.pid

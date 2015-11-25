@@ -5,7 +5,7 @@ install:
 	chmod 755 /usr/local/bin/ssl-ca
 
 clean:
-	rm -rf openssl.cnf certs keys CA.key CA.crt CA.p12 .server.pid
+	rm -rf openssl.cnf certs keys CA.key CA.crt CA.p12 CA.srl .server.pid
 
 test: clean
 	./ssl-ca init
