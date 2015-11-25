@@ -86,4 +86,7 @@ at: https://www.shore.co.il/cgit/.
 TODO
 ----
 
-- PKCS12 file for browser import (also tests).
+- Add server test.
+- Verify that adding the PKCS12 cert to Firefox enables secure connections
+  without warnings.
+- Certs are signed for 30 days although the setting is 365 days, fix that.
