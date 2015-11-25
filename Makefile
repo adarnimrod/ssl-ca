@@ -28,3 +28,6 @@ test: clean
 	test "$$(openssl x509 -in certs/www -subject -noout)" = "subject= /CN=www.ssl-ca"
 	test "$$(openssl x509 -in certs/smtp -issuer -noout)" = "issuer= /CN=ssl-ca"
 	test "$$(openssl x509 -in certs/smtp -subject -noout)" = "subject= /CN=smtp.ssl-ca"
+	openssl s_server -accept 8080 -cert certs/www -key keys/www -CAfile CA.crt & echo "$$!" > server.pid
+	kill "$$(cat server.pid)"
+	rm server.pid
