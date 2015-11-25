@@ -28,6 +28,7 @@ test: clean
 	test "$$(openssl x509 -in certs/www -subject -noout)" = "subject= /CN=www.ssl-ca"
 	test "$$(openssl x509 -in certs/smtp -issuer -noout)" = "issuer= /CN=ssl-ca"
 	test "$$(openssl x509 -in certs/smtp -subject -noout)" = "subject= /CN=smtp.ssl-ca"
-	openssl s_server -accept 15876 -cert certs/www -key keys/www -CAfile CA.crt -quiet & echo "$$!" > .server.pid
+	openssl s_server -cert certs/www -key keys/www -CAfile CA.crt -quiet -www -no_dhe & echo "$$!" > .server.pid
+	test "$$(curl --fail --cacert CA.crt --resolve www.ssl-ca:4433:127.0.0.1 --write-out '%{ssl_verify_result}' --silent --output /dev/null https://www.ssl-ca:4433/)" = "0"
 	kill "$$(cat .server.pid)"
 	rm .server.pid
