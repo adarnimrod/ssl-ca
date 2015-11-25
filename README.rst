@@ -2,9 +2,10 @@ SSL-CA
 ######
 
 This utility automates generating an SSL certificate authority, keys and signed
-certificates. The only dependecy is openssl. The usage in mind is testing and
-internal environments, therefore some security measures (like revokation) are
-not available in the current implemetation.
+certificates. The dependencies are: OpenSSL, cURL git and make (for testing and
+installation, although you can just copy the file). The use case in mind is
+testing and internal environments, therefore some security measures (like
+revocation) are not available in the current implementation.
 
 Installation
 ------------
@@ -86,7 +87,6 @@ at: https://www.shore.co.il/cgit/.
 TODO
 ----
 
-- Add server test.
 - Verify that adding the PKCS12 cert to Firefox enables secure connections
   without warnings.
 - Certs are signed for 30 days although the setting is 365 days, fix that.
