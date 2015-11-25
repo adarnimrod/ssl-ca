@@ -12,7 +12,6 @@ certs = \$dir/certs
 certificate = \$dir/CA.crt
 private_key = \$dir/CA.key
 default_md = sha256
-default_days = 365
 email_in_dn = no
 RANDFILE = /dev/urandom
 database = /dev/null
@@ -75,6 +74,7 @@ init () {
             -new \
             -key CA.key \
             -extensions v3_ca \
+            -days 3650 \
             -out CA.crt
     fi
     if [ -e CA.p12 ]
@@ -123,6 +123,7 @@ sign_key () {
         -set_serial $seed \
         -extensions v3_req \
         -extfile openssl.cnf \
+        -days 3650 \
         -CAkey CA.key
     rm "$csr"
 }
