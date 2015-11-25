@@ -59,20 +59,35 @@ init () {
     else
         echo "$config" > "openssl.cnf"
     fi
-    openssl req \
-        -x509 \
-        -config openssl.cnf \
-        -new \
-        -newkey rsa:2048 \
-        -keyout CA.key \
-        -extensions v3_ca \
-        -out CA.crt
-    openssl pkcs12 \
-        -export \
-        -in CA.crt \
-        -inkey CA.key \
-        -out CA.p12 \
-        -passout pass:
+    if [ -e CA.key ]
+    then
+        echo CA.key already exists, skipping.
+    else
+        openssl genrsa -out CA.key 2048
+    fi
+    if [ -e CA.crt ]
+    then
+        echo CA.crt already exists, skipping.
+    else
+        openssl req \
+            -x509 \
+            -config openssl.cnf \
+            -new \
+            -key CA.key \
+            -extensions v3_ca \
+            -out CA.crt
+    fi
+    if [ -e CA.p12 ]
+    then
+        echo PKCS12 file already exists, skipping.
+    else
+        openssl pkcs12 \
+            -export \
+            -in CA.crt \
+            -inkey CA.key \
+            -out CA.p12 \
+            -passout pass:
+    fi
 }
 
 sign_key () {
