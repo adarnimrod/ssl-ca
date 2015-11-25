@@ -5,7 +5,7 @@ install:
 	chmod 755 /usr/local/bin/ssl-ca
 
 clean:
-	rm -rf openssl.cnf certs keys CA.key CA.crt CA.p12
+	rm -rf openssl.cnf certs keys CA.key CA.crt CA.p12 .server.pid
 
 test: clean
 	./ssl-ca init
@@ -28,6 +28,6 @@ test: clean
 	test "$$(openssl x509 -in certs/www -subject -noout)" = "subject= /CN=www.ssl-ca"
 	test "$$(openssl x509 -in certs/smtp -issuer -noout)" = "issuer= /CN=ssl-ca"
 	test "$$(openssl x509 -in certs/smtp -subject -noout)" = "subject= /CN=smtp.ssl-ca"
-	openssl s_server -accept 8080 -cert certs/www -key keys/www -CAfile CA.crt & echo "$$!" > server.pid
-	kill "$$(cat server.pid)"
-	rm server.pid
+	openssl s_server -accept 15876 -cert certs/www -key keys/www -CAfile CA.crt -quiet & echo "$$!" > .server.pid
+	kill "$$(cat .server.pid)"
+	rm .server.pid
