@@ -9,7 +9,7 @@ revocation) are not available in the current implementation.
 
 Installation
 ------------
-::
+.. code:: shell
 
     git clone https://www.shore.co.il/cgit/ssl-ca
     cd ssl-ca
@@ -62,19 +62,20 @@ To resign **ALL** existing keys (regardles of existing certificates) ::
 
 
 The certs by themselves are the same as self-signed certs, but once you add
-``CA.crt`` to your browser (or OS), then the certs will be valid as any other
-cert on the internet.
+:code:`CA.crt` to your browser (or OS), then the certs will be valid as any
+other cert on the internet.
 
 Development
 -----------
 
-For easing devlopment ``make test`` and ``make clean`` are also provided (it's
-recommended to add ``make test`` to the pre-push git hook).
+For easing devlopment :code:`make test` and :code:`make clean` are also provided
+(it's recommended to add :code:`make test` to the pre-push git hook).
 
 License
 -------
 
-This software is licnesed under the MIT licese (see the ``LICENSE.txt`` file).
+This software is licnesed under the MIT licese (see the :code:`LICENSE.txt`
+file).
 
 Author
 ------
