@@ -18,7 +18,7 @@ Installation
 Usage
 -----
 
-This will generate, inside the new directory, the directory stucture, a starting
+This will generate, inside the new directory, the directory structure, a starting
 configuration for starting work and a new CA key and certificate. ::
 
     $ mkdir domain.tld
@@ -50,7 +50,7 @@ have a matching certificate under ``certs/`` will be signed when running ::
     subject=/CN=*.*.smtp.domain.tld
     Getting CA Private Key
 
-To resign **ALL** existing keys (regardles of existing certificates) ::
+To resign **ALL** existing keys (regardless of existing certificates) ::
 
     $ ssl-ca resign
     Signature ok
@@ -70,12 +70,12 @@ Development
 
 To ease development :code:`make clean`, :code:`make lint` and :code:`make test`
 are available. It's recommended to add :code:`make lint`  and :code:`make test`
-to to your Git pre-commit and pre-push hooks accourdingly.
+to to your Git pre-commit and pre-push hooks accordingly.
 
 License
 -------
 
-This software is licnesed under the MIT licese (see the :code:`LICENSE.txt`
+This software is licensed under the MIT license (see the :code:`LICENSE.txt`
 file).
 
 Author
