@@ -51,6 +51,7 @@ usage () {
 }
 
 init () {
+    local cn
     export cn="$(basename $PWD)"
     mkdir -p certs keys
     if [ -e openssl.cnf ]
@@ -98,6 +99,7 @@ init () {
 }
 
 sign_key () {
+    local csr cn
     if [ $# -lt 1 ] || [ "$1" = "" ]
     then
         echo "No host specified."
