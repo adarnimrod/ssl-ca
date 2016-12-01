@@ -1,6 +1,9 @@
 SSL-CA
 ######
 
+.. image:: https://travis-ci.org/adarnimrod/ssl-ca.svg?branch=master
+    :target: https://travis-ci.org/adarnimrod/ssl-ca
+
 This utility automates generating an SSL certificate authority, keys and signed
 certificates. The dependencies are: OpenSSL, cURL git and make (for testing and
 installation, although you can just copy the file). The use case in mind is
@@ -68,10 +71,9 @@ other cert on the internet.
 Development
 -----------
 
-To ease development :code:`make clean`, :code:`make lint` and :code:`make test`
-are available. It's recommended to add :code:`make lint`  and :code:`make test`
-to to your Git pre-commit and pre-push hooks accordingly. Also, this repo has
-`pre-commit <http://pre-commit.com/>`_ configured.
+For testing run :code:`make test`. For cleaning temporary files run :code:`git
+clean -fdx`. You can use `pre-commit <http://pre-commit.com/>`_ to have the test
+(which is quite quick) run on every commit to ensure quality code.
 
 License
 -------
@@ -86,6 +88,3 @@ Nimrod Adar, `contact me <nimrod@shore.co.il>`_ or visit my `website
 <https://www.shore.co.il/>`_. Patches are welcome via `git send-email
 <http://git-scm.com/book/en/v2/Git-Commands-Email>`_. The repository is located
 at: https://www.shore.co.il/cgit/.
-
-TODO
-----

@@ -2,21 +2,17 @@
     sha: 97b88d9610bcc03982ddac33caba98bb2b751f5f
     hooks:
     -   id: check-added-large-files
-    -   id: check-json
-    -   id: check-xml
     -   id: check-yaml
     -   id: check-merge-conflict
--   repo: local
-    hooks:
-    -   id: local_test
-        name: make test
-        entry: make test
-        language: system
-        always_run: True
-        files: Makefile
-
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
-    sha: 604fe77b53d3514d5ad0f66764c7783850bb6e98
+    sha: v0.1.0
     hooks:
     -   id: shell-lint
         files: ssl-ca
+-   repo: local
+    hooks:
+    -   id: test
+        name: make test
+        entry: make test
+        language: system
+        files: Makefile|ssl-ca

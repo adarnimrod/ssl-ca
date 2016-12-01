@@ -1,17 +1,10 @@
-.PHONY: install clean test lint
+.PHONY: install test
 
 install:
 	cp ssl-ca /usr/local/bin/ssl-ca
 	chmod 755 /usr/local/bin/ssl-ca
 
-clean:
-	if [ -f .server.pid ]; then kill "$$(cat .server.pid)"; fi
-	rm -rf openssl.cnf certs keys CA.key CA.crt CA.p12 CA.srl .server.pid
-
-lint:
-	/bin/sh -en ssl-ca
-
-test: clean lint
+test:
 	./ssl-ca init
 	test "$$(openssl rsa -noout -check -in CA.key)" = "RSA key ok"
 	test "$$(openssl verify -CAfile CA.crt CA.crt)" = "CA.crt: OK"
