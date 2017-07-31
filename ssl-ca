@@ -1,7 +1,12 @@
 #!/bin/sh
 set -eu
 
-which openssl >/dev/null || ( echo "Can't find openssl." >&2; exit 1)
+die () {
+    echo "$@" >&2
+    exit 1
+}
+
+which openssl >/dev/null || die "Can't find openssl."
 #seed="$(hexdump -n10 -e '10/1 "%02o" "\n"' /dev/urandom)"
 config=\
 "[ ca ]
@@ -106,19 +111,16 @@ sign_key () {
     local csr cn
     if [ $# -lt 1 ] || [ "$1" = "" ]
     then
-        echo "No host specified." >&2
-        exit 1
+        die "No host specified."
     fi
     if [ ! -f CA.crt ] || [ ! -f CA.key ] || [ ! -d keys ] || [ ! -d certs ] ||
         [ ! -f openssl.cnf ]
     then
-        echo "CA isn't initialized properly." >&2
-        exit 1
+        die "CA isn't initialized properly."
     fi
     if [ ! -f "keys/$1" ]
     then
-        echo "Can't find key to sign." >&2
-        exit 1
+        die "Can't find key to sign."
     fi
     csr="$(mktemp -t ssl-ca-XXXXXXXXX)"
     cn="$1.$(basename "$PWD")"
@@ -145,18 +147,15 @@ sign_key () {
 gen_key () {
     if [ $# -lt 1 ] || [ "$1" = "" ]
     then
-        echo "No host specified." >&2
-        exit 1
+        die "No host specified."
     fi
     if [ ! -d keys ]
     then
-        echo "keys directory doesn't exists, run ssl-ca init to rectify." >&2
-        exit 1
+        die "keys directory doesn't exists, run ssl-ca init to rectify."
     fi
     if [ -e "keys/$1" ]
     then
-        echo "Key already exists." >&2
-        exit 1
+        die "Key already exists."
     fi
     openssl genrsa -out "keys/$1" 2048
 }
