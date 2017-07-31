@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-which openssl >/dev/null || ( echo "Can't find openssl."; exit 1)
+which openssl >/dev/null || ( echo "Can't find openssl." >&2; exit 1)
 #seed="$(hexdump -n10 -e '10/1 "%02o" "\n"' /dev/urandom)"
 config=\
 "[ ca ]
@@ -55,7 +55,7 @@ init () {
     # shellcheck disable=SC2039
     local cn
     cn="$(basename "$PWD")"
-    export cd
+    export cn
     mkdir -p certs keys
     if [ -e openssl.cnf ]
     then
@@ -65,19 +65,19 @@ init () {
     fi
     if [ -e CA.srl ]
     then
-        echo CA.srl already exists, skipping.
+        echo CA.srl already exists, skipping. >&2
     else
         echo 1000 > CA.srl
     fi
     if [ -e CA.key ]
     then
-        echo CA.key already exists, skipping.
+        echo CA.key already exists, skipping. >&2
     else
         openssl genrsa -out CA.key 2048
     fi
     if [ -e CA.crt ]
     then
-        echo CA.crt already exists, skipping.
+        echo CA.crt already exists, skipping. >&2
     else
         openssl req \
             -x509 \
@@ -90,7 +90,7 @@ init () {
     fi
     if [ -e CA.p12 ]
     then
-        echo PKCS12 file already exists, skipping.
+        echo PKCS12 file already exists, skipping. >&2
     else
         openssl pkcs12 \
             -export \
@@ -106,18 +106,18 @@ sign_key () {
     local csr cn
     if [ $# -lt 1 ] || [ "$1" = "" ]
     then
-        echo "No host specified."
+        echo "No host specified." >&2
         exit 1
     fi
     if [ ! -f CA.crt ] || [ ! -f CA.key ] || [ ! -d keys ] || [ ! -d certs ] ||
         [ ! -f openssl.cnf ]
     then
-        echo "CA isn't initialized properly."
+        echo "CA isn't initialized properly." >&2
         exit 1
     fi
     if [ ! -f "keys/$1" ]
     then
-        echo "Can't find key to sign."
+        echo "Can't find key to sign." >&2
         exit 1
     fi
     csr="$(mktemp -t ssl-ca-XXXXXXXXX)"
@@ -145,17 +145,17 @@ sign_key () {
 gen_key () {
     if [ $# -lt 1 ] || [ "$1" = "" ]
     then
-        echo "No host specified."
+        echo "No host specified." >&2
         exit 1
     fi
     if [ ! -d keys ]
     then
-        echo "keys directory doesn't exists, run ssl-ca init to rectify."
+        echo "keys directory doesn't exists, run ssl-ca init to rectify." >&2
         exit 1
     fi
     if [ -e "keys/$1" ]
     then
-        echo "Key already exists."
+        echo "Key already exists." >&2
         exit 1
     fi
     openssl genrsa -out "keys/$1" 2048
