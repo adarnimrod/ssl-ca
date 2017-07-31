@@ -1,14 +1,16 @@
 -   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: 97b88d9610bcc03982ddac33caba98bb2b751f5f
+    sha: v0.9.1
     hooks:
     -   id: check-added-large-files
     -   id: check-yaml
     -   id: check-merge-conflict
 -   repo: https://www.shore.co.il/git/shell-pre-commit/
-    sha: v0.1.0
+    sha: v0.5.4
     hooks:
     -   id: shell-lint
-        files: ssl-ca
+        files: &shellscripts ssl-ca
+    -   id: shellcheck
+        files: *shellscripts
 -   repo: local
     hooks:
     -   id: test

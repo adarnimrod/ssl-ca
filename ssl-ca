@@ -1,7 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
+set -eu
 
-test $(which openssl) || ( echo "Can't find openssl."; exit 1)
-seed="$(hexdump -n10 -e '10/1 "%02o" "\n"' /dev/urandom)"
+which openssl >/dev/null || ( echo "Can't find openssl."; exit 1)
+#seed="$(hexdump -n10 -e '10/1 "%02o" "\n"' /dev/urandom)"
 config=\
 "[ ca ]
 default_ca = CA_default
@@ -51,12 +52,14 @@ usage () {
 }
 
 init () {
+    # shellcheck disable=SC2039
     local cn
-    export cn="$(basename $PWD)"
+    cn="$(basename "$PWD")"
+    export cd
     mkdir -p certs keys
     if [ -e openssl.cnf ]
     then
-        echo openssl.cnf already exists, skipping generation.
+        echo openssl.cnf already exists, skipping generation. >&2
     else
         echo "$config" > "openssl.cnf"
     fi
@@ -99,6 +102,7 @@ init () {
 }
 
 sign_key () {
+    # shellcheck disable=SC2039
     local csr cn
     if [ $# -lt 1 ] || [ "$1" = "" ]
     then
@@ -117,9 +121,10 @@ sign_key () {
         exit 1
     fi
     csr="$(mktemp -t ssl-ca-XXXXXXXXX)"
-    export cn="$1.$(basename $PWD)"
+    cn="$1.$(basename "$PWD")"
+    export cn
     openssl req \
-        -key keys/$1 \
+        -key "keys/$1" \
         -new \
         -reqexts v3_req \
         -config openssl.cnf \
@@ -173,16 +178,16 @@ case "$1" in
     sign)
         for key in keys/*
         do
-            if [ ! -f "certs/$(basename $key)" ]
+            if [ ! -f "certs/$(basename "$key")" ]
             then
-                sign_key "$(basename $key)"
+                sign_key "$(basename "$key")"
             fi
         done
         ;;
     resign)
         for key in keys/*
         do
-            sign_key "$(basename $key)"
+            sign_key "$(basename "$key")"
         done
         ;;
     *)
