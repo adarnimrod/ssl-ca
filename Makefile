@@ -1,4 +1,4 @@
-.PHONY: install test
+.PHONY: install test clean
 
 install:
 	cp ssl-ca /usr/local/bin/ssl-ca
@@ -29,3 +29,6 @@ test:
 	test "$$(curl --fail --cacert CA.crt --resolve www.ssl-ca:4433:127.0.0.1 --write-out '%{ssl_verify_result}' --silent --output /dev/null https://www.ssl-ca:4433/)" = "0"
 	kill "$$(cat .server.pid)"
 	rm .server.pid
+
+clean:
+	git clean -Xdf

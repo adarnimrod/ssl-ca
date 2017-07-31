@@ -2,8 +2,8 @@
 *~
 *.swp
 *.swo
-certs/*
-keys/*
+certs/
+keys/
 openssl.cnf
 CA.key
 CA.crt
