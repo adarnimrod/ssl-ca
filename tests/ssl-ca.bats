@@ -30,8 +30,8 @@ match () {
     verify certs/www
     match keys/www certs/www
     [ "$(openssl rsa -noout -check -in keys/www)" = "RSA key ok" ]
-    [ "$(openssl x509 -in certs/www -issuer -noout)" = "issuer=CN = ssl-ca" ]
-    [ "$(openssl x509 -in certs/www -subject -noout)" = "subject=CN = www.ssl-ca" ]
+    [ "$(openssl x509 -in certs/www -issuer -noout | sed 's@[ /]@@g')" = "issuer=CN=ssl-ca" ]
+    [ "$(openssl x509 -in certs/www -subject -noout | sed 's@[ /]@@g')" = "subject=CN=www.ssl-ca" ]
 
 }
 
@@ -40,8 +40,8 @@ match () {
     ./ssl-ca sign
     verify certs/smtp
     match keys/smtp certs/smtp
-    [ "$(openssl x509 -in certs/smtp -issuer -noout)" = "issuer=CN = ssl-ca" ]
-    [ "$(openssl x509 -in certs/smtp -subject -noout)" = "subject=CN = smtp.ssl-ca" ]
+    [ "$(openssl x509 -in certs/smtp -issuer -noout | sed 's@[ /]@@g')" = "issuer=CN=ssl-ca" ]
+    [ "$(openssl x509 -in certs/smtp -subject -noout | sed 's@[ /]@@g')" = "subject=CN=smtp.ssl-ca" ]
 
 }
 
@@ -53,10 +53,10 @@ match () {
     match keys/www certs/www
     verify certs/smtp
     match keys/smtp certs/smtp
-    [ "$(openssl x509 -in certs/www -issuer -noout)" = "issuer=CN = ssl-ca" ]
-    [ "$(openssl x509 -in certs/www -subject -noout)" = "subject=CN = www.ssl-ca" ]
-    [ "$(openssl x509 -in certs/smtp -issuer -noout)" = "issuer=CN = ssl-ca" ]
-    [ "$(openssl x509 -in certs/smtp -subject -noout)" = "subject=CN = smtp.ssl-ca" ]
+    [ "$(openssl x509 -in certs/www -issuer -noout | sed 's@[ /]@@g')" = "issuer=CN=ssl-ca" ]
+    [ "$(openssl x509 -in certs/www -subject -noout | sed 's@[ /]@@g')" = "subject=CN=www.ssl-ca" ]
+    [ "$(openssl x509 -in certs/smtp -issuer -noout | sed 's@[ /]@@g')" = "issuer=CN=ssl-ca" ]
+    [ "$(openssl x509 -in certs/smtp -subject -noout | sed 's@[ /]@@g')" = "subject=CN=smtp.ssl-ca" ]
 }
 
 @test "webserver" {
