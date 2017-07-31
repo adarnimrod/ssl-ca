@@ -8,13 +8,6 @@
     sha: v0.5.4
     hooks:
     -   id: shell-lint
-        files: &shellscripts ssl-ca
+        files: &shellscripts ^ssl-ca$
     -   id: shellcheck
         files: *shellscripts
--   repo: local
-    hooks:
-    -   id: test
-        name: make test
-        entry: make test
-        language: system
-        files: Makefile|ssl-ca

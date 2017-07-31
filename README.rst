@@ -4,11 +4,12 @@ SSL-CA
 .. image:: https://travis-ci.org/adarnimrod/ssl-ca.svg?branch=master
     :target: https://travis-ci.org/adarnimrod/ssl-ca
 
-This utility automates generating an SSL certificate authority, keys and signed
-certificates. The dependencies are: OpenSSL, cURL git and make (for testing and
-installation, although you can just copy the file). The use case in mind is
-testing and internal environments, therefore some security measures (like
-revocation) are not available in the current implementation.
+This utility automates generating an SSL certificate authority, keys and
+signed certificates. The only dependency is OpenSSL (and base utils). Make 
+and Git are needed for installation (although one can just download and copy
+:code:`ssl-ca`). The use case in mind is testing and internal environments,
+therefore some security measures (like revocation) are not available in the
+current implementation.
 
 Installation
 ------------
@@ -71,9 +72,17 @@ other cert on the internet.
 Development
 -----------
 
-For testing run :code:`make test`. For cleaning temporary files run :code:`git
-clean -fdx`. You can use `pre-commit <http://pre-commit.com/>`_ to have the test
-(which is quite quick) run on every commit to ensure quality code.
+Requirements are:
+
+- Python (2.7 or 3.5 or later).
+- Make.
+- Git.
+- Bats.
+
+Tests are written using `Bats <https://github.com/sstephenson/bats>`_ and some
+linters are used with `pre-commit <http://pre-commit.com/>`_. The :code:`clean`,
+:code:`test` and :code:`pre-commit` Make targets are provided. Installing the
+pre-commit Git hooks is recommended.
 
 License
 -------
