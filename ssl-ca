@@ -41,10 +41,11 @@ RANDFILE = /dev/urandom
 CN = \${ENV::cn}
 
 [ v3_ca ]
-basicConstraints = CA:true
+basicConstraints = critical, CA:true
+keyUsage = keyCertSign, cRLSign
 
 [ v3_req ]
-basicConstraints = CA:false
+basicConstraints = critical, CA:false
 subjectAltName = @AltNames
 
 [ AltNames ]
