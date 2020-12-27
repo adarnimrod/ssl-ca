@@ -1,5 +1,3 @@
-#!/usr/bin/env bats
-
 export PATH="$BATS_TEST_DIRNAME/../:$PATH"
 
 setup () {
